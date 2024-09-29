@@ -3,6 +3,7 @@ package services
 import (
 	"errors"
 
+	"github.com/ahmed-afzal1/restaurant/config"
 	"github.com/ahmed-afzal1/restaurant/models"
 	"github.com/ahmed-afzal1/restaurant/repositories"
 	"github.com/ahmed-afzal1/restaurant/requests"
@@ -16,6 +17,11 @@ func HashPassword(password string) (string, error) {
 
 func Signup(req requests.RegisterRequest) (models.User, error) {
 	var user models.User
+
+	if err := config.DB.Where("email = ?", req.Email).First(&user).Error; err == nil {
+		return models.User{}, errors.New("Email already exists!")
+	}
+
 	if req.Password != req.PasswordConfirmation {
 		return models.User{}, errors.New("passwords do not match")
 	}
@@ -24,10 +30,10 @@ func Signup(req requests.RegisterRequest) (models.User, error) {
 	req.Password = password
 	req.PasswordConfirmation = password
 
-	user, err := repositories.Signup(req)
+	savedUser, err := repositories.Signup(req)
 
 	if err != nil {
 		return models.User{}, err
 	}
-	return user, nil
+	return savedUser, nil
 }

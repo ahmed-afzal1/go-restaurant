@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"time"
 
+	// "github.com/ahmed-afzal1/restaurant/config"
+	// "github.com/ahmed-afzal1/restaurant/models"
 	"github.com/ahmed-afzal1/restaurant/requests"
 	"github.com/ahmed-afzal1/restaurant/services"
 	"github.com/gin-gonic/gin"
@@ -17,7 +19,6 @@ func Dashboard(c *gin.Context) {
 
 func Register(c *gin.Context) {
 	var req requests.RegisterRequest
-
 	var _, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 	defer cancel()
 
@@ -31,9 +32,14 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	data, _ := services.Signup(req)
+	savedUser, err := services.Signup(req)
 
-	c.JSON(http.StatusAccepted, gin.H{"data": data})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{"data": savedUser})
 }
 
 func Login(c *gin.Context) {
