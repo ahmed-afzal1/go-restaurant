@@ -2,7 +2,6 @@ package services
 
 import (
 	"errors"
-
 	"github.com/ahmed-afzal1/restaurant/config"
 	"github.com/ahmed-afzal1/restaurant/models"
 	"github.com/ahmed-afzal1/restaurant/repositories"
@@ -13,6 +12,11 @@ import (
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	return string(bytes), err
+}
+
+func CheckPasswordHash(password string, hashPassword string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hashPassword), []byte(password))
+	return err == nil
 }
 
 func Signup(req requests.RegisterRequest) (models.User, error) {
@@ -36,4 +40,19 @@ func Signup(req requests.RegisterRequest) (models.User, error) {
 		return models.User{}, err
 	}
 	return savedUser, nil
+}
+
+func Login(req requests.LoginRequest) (models.User, error) {
+	var user models.User
+
+	if err := config.DB.Where("email = ?", req.Email).First(&user).Error; err == nil {
+		return models.User{}, errors.New("User not found with this email")
+	}
+
+	passwordMatch := CheckPasswordHash(req.Password, *user.Password)
+	if !passwordMatch {
+		return models.User{}, errors.New("Password not matched")
+	}
+
+	return user, nil
 }

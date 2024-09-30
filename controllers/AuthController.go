@@ -2,15 +2,12 @@ package controllers
 
 import (
 	"context"
-	"net/http"
-	"time"
-
-	// "github.com/ahmed-afzal1/restaurant/config"
-	// "github.com/ahmed-afzal1/restaurant/models"
 	"github.com/ahmed-afzal1/restaurant/requests"
 	"github.com/ahmed-afzal1/restaurant/services"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"net/http"
+	"time"
 )
 
 func Dashboard(c *gin.Context) {
@@ -43,5 +40,26 @@ func Register(c *gin.Context) {
 }
 
 func Login(c *gin.Context) {
-	c.JSON(http.StatusAccepted, gin.H{"message": "Login successfully"})
+	var req requests.LoginRequest
+
+	var _, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+	defer cancel()
+
+	if err := c.ShouldBind(&req); err != nil {
+		if validationErrors, ok := err.(validator.ValidationErrors); ok {
+			formattedErrors := requests.FormatValidationError(validationErrors)
+			c.JSON(http.StatusBadRequest, gin.H{"errors": formattedErrors})
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		}
+		return
+	}
+
+	loginUser, err := services.Login(req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"data": "", "error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusAccepted, gin.H{"data": loginUser})
 }
