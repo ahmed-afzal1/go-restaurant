@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/ahmed-afzal1/restaurant/controllers"
+	"github.com/ahmed-afzal1/restaurant/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,5 +13,10 @@ func RegisterRoutes(r *gin.Engine) {
 		authRoute.POST("/login", controllers.Login)
 	}
 
-	r.GET("/dashboard", controllers.Dashboard)
+	userRoute := r.Group("/v1/admin")
+
+	userRoute.Use(middleware.AdminAuthenticate())
+	{
+		userRoute.GET("/details", controllers.Details)
+	}
 }

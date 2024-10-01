@@ -1,12 +1,15 @@
 package helpers
 
 import (
+	"errors"
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/ahmed-afzal1/restaurant/config"
 	"github.com/ahmed-afzal1/restaurant/models"
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 )
 
@@ -55,4 +58,40 @@ func GenerateToken(email string, uid uint) (signedToken string, signedRefreshTok
 	}
 
 	return token, refreshToken, err
+}
+
+func GetTokenFromHeader(c *gin.Context) (string, error) {
+	authHeader := c.GetHeader("Authorization")
+
+	if authHeader == "" {
+		return "", errors.New("authorization header is missing")
+	}
+
+	bearerToken := strings.Split(authHeader, " ")
+	return bearerToken[1], nil
+}
+
+func ValidateToken(signedToken string) (*SignedDetails, error) {
+	token, err := jwt.ParseWithClaims(
+		signedToken,
+		&SignedDetails{},
+		func(token *jwt.Token) (interface{}, error) {
+			return []byte(secretKey), nil
+		},
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	claims, ok := token.Claims.(*SignedDetails)
+	if !ok || !token.Valid {
+		return nil, errors.New("the token is invalid")
+	}
+
+	if claims.ExpiresAt != nil && claims.ExpiresAt.Before(time.Now()) {
+		return nil, errors.New("token is expired")
+	}
+
+	return claims, nil
 }

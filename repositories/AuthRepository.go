@@ -27,3 +27,20 @@ func Signup(req requests.RegisterRequest) (models.User, error) {
 
 	return user, nil
 }
+
+func Login(req requests.LoginRequest) (models.User, error) {
+	var user models.User
+
+	result := config.DB.Where("email =?", req.Email).First(&user)
+
+	if result.Error != nil {
+		return models.User{}, result.Error
+	}
+
+	token, refreshToken, _ := helpers.GenerateToken(*user.Email, user.ID)
+
+	user.Token = &token
+	user.Refresh_token = &refreshToken
+
+	return user, nil
+}

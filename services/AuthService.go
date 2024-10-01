@@ -2,7 +2,6 @@ package services
 
 import (
 	"errors"
-
 	"github.com/ahmed-afzal1/restaurant/config"
 	"github.com/ahmed-afzal1/restaurant/models"
 	"github.com/ahmed-afzal1/restaurant/repositories"
@@ -15,11 +14,16 @@ func HashPassword(password string) (string, error) {
 	return string(bytes), err
 }
 
+func CheckPasswordHash(password string, hashPassword string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hashPassword), []byte(password))
+	return err == nil
+}
+
 func Signup(req requests.RegisterRequest) (models.User, error) {
 	var user models.User
 
 	if err := config.DB.Where("email = ?", req.Email).First(&user).Error; err == nil {
-		return models.User{}, errors.New("Email already exists!")
+		return models.User{}, errors.New("email already exists")
 	}
 
 	if req.Password != req.PasswordConfirmation {
@@ -36,4 +40,27 @@ func Signup(req requests.RegisterRequest) (models.User, error) {
 		return models.User{}, err
 	}
 	return savedUser, nil
+}
+
+func Login(req requests.LoginRequest) (models.User, error) {
+	var user models.User
+
+	authUser := config.DB.Where("email = ?", req.Email).First(&user)
+
+	if authUser.Error != nil {
+		return models.User{}, errors.New("user not found with this email")
+	}
+
+	passwordMatch := CheckPasswordHash(req.Password, *user.Password)
+	if !passwordMatch {
+		return models.User{}, errors.New("password not matched")
+	}
+
+	loginUser, err := repositories.Login(req)
+
+	if err != nil {
+		return models.User{}, err
+	}
+
+	return loginUser, nil
 }
