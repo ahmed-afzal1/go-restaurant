@@ -19,4 +19,11 @@ func RegisterRoutes(r *gin.Engine) {
 	{
 		userRoute.GET("/details", controllers.Details)
 	}
+
+	categoryRoute := r.Group("/v1/admin/category")
+
+	categoryRoute.Use(middleware.AdminAuthenticate())
+	{
+		categoryRoute.GET("/index", controllers.GetAllCategories)
+	}
 }
