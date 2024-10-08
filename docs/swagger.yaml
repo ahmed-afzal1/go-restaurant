@@ -1,0 +1,109 @@
+basePath: /api/v1
+definitions:
+  requests.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  requests.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      password_confirmation:
+        type: string
+      phone:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+host: http://localhost:8080/
+info:
+  contact:
+    name: API Support Team
+  description: A comprehensive API for managing restaurant data.
+  license:
+    name: MIT
+  title: Restaurant Management API
+  version: "1.0"
+paths:
+  /v1/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Logs in a user with email and password.
+      parameters:
+      - description: Login Request
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/requests.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'data: loginUser'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'error: bad request'
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Login user
+      tags:
+      - Authentication
+  /v1/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Registers a new user with email, phone, and password.
+      parameters:
+      - description: Register Request
+        in: body
+        name: register
+        required: true
+        schema:
+          $ref: '#/definitions/requests.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 'data: savedUser'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'errors: validationErrors'
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: 'error: internal server error'
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Register a new user
+      tags:
+      - Authentication
+schemes:
+- http
+- https
+securityDefinitions:
+  JWT:
+    description: JWT security accessToken. Please add it in the format "Bearer {AccessToken}"
+      to authorize your requests.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

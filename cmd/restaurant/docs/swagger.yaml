@@ -1,0 +1,22 @@
+basePath: /api/v1
+host: http://localhost:8080/
+info:
+  contact:
+    name: API Support Team
+  description: A comprehensive API for managing restaurant data.
+  license:
+    name: MIT
+  title: Restaurant Management API
+  version: "1.0"
+paths: {}
+schemes:
+- http
+- https
+securityDefinitions:
+  JWT:
+    description: JWT security accessToken. Please add it in the format "Bearer {AccessToken}"
+      to authorize your requests.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

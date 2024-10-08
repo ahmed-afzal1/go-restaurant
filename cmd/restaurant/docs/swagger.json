@@ -1,0 +1,29 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "A comprehensive API for managing restaurant data.",
+        "title": "Restaurant Management API",
+        "contact": {
+            "name": "API Support Team"
+        },
+        "license": {
+            "name": "MIT"
+        },
+        "version": "1.0"
+    },
+    "host": "http://localhost:8080/",
+    "basePath": "/api/v1",
+    "paths": {},
+    "securityDefinitions": {
+        "JWT": {
+            "description": "JWT security accessToken. Please add it in the format \"Bearer {AccessToken}\" to authorize your requests.",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

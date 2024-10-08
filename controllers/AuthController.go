@@ -12,6 +12,17 @@ import (
 	"time"
 )
 
+// Register godoc
+// @Summary      Register a new user
+// @Description  Registers a new user with email, phone, and password.
+// @Tags         Authentication
+// @Accept       json
+// @Produce      json
+// @Param        register body requests.RegisterRequest true "Register Request"
+// @Success      201 {object} map[string]interface{} "data: savedUser"
+// @Failure      400 {object} map[string]interface{} "errors: validationErrors"
+// @Failure      500 {object} map[string]interface{} "error: internal server error"
+// @Router       /v1/auth/register [post]
 func Register(c *gin.Context) {
 	var req requests.RegisterRequest
 	var _, cancel = context.WithTimeout(context.Background(), 100*time.Second)
@@ -37,6 +48,16 @@ func Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"data": savedUser})
 }
 
+// Login godoc
+// @Summary      Login user
+// @Description  Logs in a user with email and password.
+// @Tags         Authentication
+// @Accept       json
+// @Produce      json
+// @Param        login body requests.LoginRequest true "Login Request"
+// @Success      200 {object} map[string]interface{} "data: loginUser"
+// @Failure      400 {object} map[string]interface{} "error: bad request"
+// @Router       /v1/auth/login [post]
 func Login(c *gin.Context) {
 	var req requests.LoginRequest
 

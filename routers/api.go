@@ -14,16 +14,18 @@ func RegisterRoutes(r *gin.Engine) {
 	}
 
 	userRoute := r.Group("/v1/admin")
-
 	userRoute.Use(middleware.AdminAuthenticate())
 	{
 		userRoute.GET("/details", controllers.Details)
 	}
 
 	categoryRoute := r.Group("/v1/admin/category")
-
 	categoryRoute.Use(middleware.AdminAuthenticate())
 	{
 		categoryRoute.GET("/index", controllers.GetAllCategories)
+		categoryRoute.POST("/store", controllers.CategoryStore)
+		categoryRoute.GET("/edit/:id", controllers.CategoryEdit)
+		categoryRoute.PATCH("/update/:id", controllers.CategoryUpdate)
+		categoryRoute.DELETE("delete/:id", controllers.CategoryDelete)
 	}
 }
