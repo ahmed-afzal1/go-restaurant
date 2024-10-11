@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/ahmed-afzal1/restaurant/helpers"
 	"github.com/ahmed-afzal1/restaurant/requests"
 	"github.com/ahmed-afzal1/restaurant/services"
 	"github.com/gin-gonic/gin"
@@ -37,11 +38,33 @@ func CategoryStore(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"data": req})
+	imagePath, err := helpers.ImageUploader(c)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	saveCategory, err := services.CategoryStore(req, imagePath)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusAccepted, gin.H{"status": "success", "data": saveCategory})
 }
 
 func CategoryEdit(c *gin.Context) {
+	id := c.Param("id")
+	category, err := services.CategoryEdit(id)
 
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusAccepted, gin.H{"status": "success", "data": category})
 }
 
 func CategoryUpdate(c *gin.Context) {

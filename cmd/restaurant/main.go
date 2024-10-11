@@ -32,6 +32,7 @@ func main() {
 	}
 
 	r := gin.Default()
+	r.Static("/assets", "./assets")
 
 	r.Use(gin.Logger())
 	config.ConnectDatabase()
