@@ -4,6 +4,7 @@ import (
 	"github.com/ahmed-afzal1/restaurant/models"
 	"github.com/ahmed-afzal1/restaurant/repositories"
 	"github.com/ahmed-afzal1/restaurant/requests"
+	"github.com/gin-gonic/gin"
 )
 
 func GetAllCategories() ([]models.Category, error) {
@@ -40,4 +41,34 @@ func CategoryEdit(id string) (models.Category, error) {
 	}
 
 	return category, nil
+}
+
+func CategoryStatusUpdate(id string, status string) (models.Category, error) {
+	category, err := repositories.CategoryStatusUpdate(id, status)
+
+	if err != nil {
+		return models.Category{}, err
+	}
+
+	return category, nil
+}
+
+func CategoryUpdate(c *gin.Context, req requests.CategoryRequest, id string) (models.Category, error) {
+	category, err := repositories.CategoryUpdate(c, req, id)
+
+	if err != nil {
+		return models.Category{}, err
+	}
+
+	return category, nil
+}
+
+func CategoryDelete(id string) (string, error) {
+	delMsg, err := repositories.CategoryDelete(id)
+
+	if err != nil {
+		return "", err
+	}
+
+	return delMsg, nil
 }
