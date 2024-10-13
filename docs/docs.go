@@ -20,7 +20,40 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/v1/auth/login": {
+        "/admin/details": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Returns the details of the authenticated user.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get user details",
+                "responses": {
+                    "200": {
+                        "description": "data: user details",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "error: unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
             "post": {
                 "description": "Logs in a user with email and password.",
                 "consumes": [
@@ -62,7 +95,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/auth/register": {
+        "/auth/register": {
             "post": {
                 "description": "Registers a new user with email, phone, and password.",
                 "consumes": [
@@ -164,7 +197,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "http://localhost:8080/",
+	Host:             "localhost:8080",
 	BasePath:         "/api/v1",
 	Schemes:          []string{"http", "https"},
 	Title:            "Restaurant Management API",

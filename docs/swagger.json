@@ -15,10 +15,43 @@
         },
         "version": "1.0"
     },
-    "host": "http://localhost:8080/",
+    "host": "localhost:8080",
     "basePath": "/api/v1",
     "paths": {
-        "/v1/auth/login": {
+        "/admin/details": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Returns the details of the authenticated user.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get user details",
+                "responses": {
+                    "200": {
+                        "description": "data: user details",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "error: unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
             "post": {
                 "description": "Logs in a user with email and password.",
                 "consumes": [
@@ -60,7 +93,7 @@
                 }
             }
         },
-        "/v1/auth/register": {
+        "/auth/register": {
             "post": {
                 "description": "Registers a new user with email, phone, and password.",
                 "consumes": [

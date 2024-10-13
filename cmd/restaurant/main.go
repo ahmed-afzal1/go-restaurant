@@ -1,13 +1,15 @@
 package main
 
 import (
-	_ "github.com/ahmed-afzal1/restaurant/cmd/restaurant/docs"
 	"github.com/ahmed-afzal1/restaurant/config"
+	_ "github.com/ahmed-afzal1/restaurant/docs"
 	"github.com/ahmed-afzal1/restaurant/routers"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"time"
 )
 
 // Swagger
@@ -17,7 +19,7 @@ import (
 //	@description				A comprehensive API for managing restaurant data.
 //	@contact.name				API Support Team
 //	@license.name				MIT
-//	@host						http://localhost:8080/
+//	@host						localhost:8080
 //	@BasePath					/api/v1
 //	@schemes					http https
 //	@securityDefinitions.apiKey	JWT
@@ -32,6 +34,17 @@ func main() {
 	}
 
 	r := gin.Default()
+
+	// CORS middleware setup
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:8080", "https://localhost:8080"}, // Add your domain or localhost
+		AllowMethods:     []string{"POST", "GET", "PUT", "DELETE", "PATCH"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
 	r.Static("/assets", "./assets")
 
 	r.Use(gin.Logger())

@@ -25,7 +25,7 @@ definitions:
     - email
     - password
     type: object
-host: http://localhost:8080/
+host: localhost:8080
 info:
   contact:
     name: API Support Team
@@ -35,7 +35,28 @@ info:
   title: Restaurant Management API
   version: "1.0"
 paths:
-  /v1/auth/login:
+  /admin/details:
+    get:
+      description: Returns the details of the authenticated user.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'data: user details'
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: 'error: unauthorized'
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWT: []
+      summary: Get user details
+      tags:
+      - User
+  /auth/login:
     post:
       consumes:
       - application/json
@@ -63,7 +84,7 @@ paths:
       summary: Login user
       tags:
       - Authentication
-  /v1/auth/register:
+  /auth/register:
     post:
       consumes:
       - application/json

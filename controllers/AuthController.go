@@ -22,7 +22,7 @@ import (
 // @Success      201 {object} map[string]interface{} "data: savedUser"
 // @Failure      400 {object} map[string]interface{} "errors: validationErrors"
 // @Failure      500 {object} map[string]interface{} "error: internal server error"
-// @Router       /v1/auth/register [post]
+// @Router       /auth/register [post]
 func Register(c *gin.Context) {
 	var req requests.RegisterRequest
 	var _, cancel = context.WithTimeout(context.Background(), 100*time.Second)
@@ -57,7 +57,7 @@ func Register(c *gin.Context) {
 // @Param        login body requests.LoginRequest true "Login Request"
 // @Success      200 {object} map[string]interface{} "data: loginUser"
 // @Failure      400 {object} map[string]interface{} "error: bad request"
-// @Router       /v1/auth/login [post]
+// @Router       /auth/login [post]
 func Login(c *gin.Context) {
 	var req requests.LoginRequest
 
@@ -83,6 +83,15 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusAccepted, gin.H{"data": loginUser, "error": ""})
 }
 
+// Details godoc
+// @Summary      Get admin details
+// @Description  Returns the details of the authenticated user.
+// @Tags         Admin
+// @Security     JWT
+// @Produce      json
+// @Success      200 {object} map[string]interface{} "data: user details"
+// @Failure      401 {object} map[string]interface{} "error: unauthorized"
+// @Router       /admin/details [get]
 func Details(c *gin.Context) {
 	email, exists := c.Get("email")
 	var user models.User
