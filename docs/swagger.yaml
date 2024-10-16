@@ -1,5 +1,12 @@
 basePath: /api/v1
 definitions:
+  requests.CategoryRequest:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
   requests.LoginRequest:
     properties:
       email:
@@ -35,6 +42,82 @@ info:
   title: Restaurant Management API
   version: "1.0"
 paths:
+  /admin/category/edit/{id}:
+    get:
+      description: Return a category after store
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'data: loginUser'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'error: bad request'
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWT: []
+      summary: Category store
+      tags:
+      - Category
+  /admin/category/index:
+    get:
+      description: Returns the lists of category
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'data: categories'
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: 'error: unauthorized'
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWT: []
+      summary: Get categories
+      tags:
+      - Category
+  /admin/category/store:
+    post:
+      description: Return a category after store
+      parameters:
+      - description: Login Request
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'data: loginUser'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'error: bad request'
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWT: []
+      summary: Category store
+      tags:
+      - Category
   /admin/details:
     get:
       description: Returns the details of the authenticated user.
@@ -53,9 +136,30 @@ paths:
             type: object
       security:
       - JWT: []
-      summary: Get user details
+      summary: Get admin details
       tags:
-      - User
+      - Admin
+  /admin/sub-category/index:
+    get:
+      description: Returns the lists of subcategory
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'data: subcategories'
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: 'error: unauthorized'
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWT: []
+      summary: Get subcategories
+      tags:
+      - SubCategory
   /auth/login:
     post:
       consumes:

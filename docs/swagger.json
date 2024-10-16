@@ -18,6 +18,125 @@
     "host": "localhost:8080",
     "basePath": "/api/v1",
     "paths": {
+        "/admin/category/edit/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Return a category after store",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Category store",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Category ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "data: loginUser",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "error: bad request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/category/index": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Returns the lists of category",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Get categories",
+                "responses": {
+                    "200": {
+                        "description": "data: categories",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "error: unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/category/store": {
+            "post": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Return a category after store",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Category store",
+                "parameters": [
+                    {
+                        "description": "Login Request",
+                        "name": "login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.CategoryRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "data: loginUser",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "error: bad request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
         "/admin/details": {
             "get": {
                 "security": [
@@ -30,12 +149,45 @@
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Admin"
                 ],
-                "summary": "Get user details",
+                "summary": "Get admin details",
                 "responses": {
                     "200": {
                         "description": "data: user details",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "error: unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/sub-category/index": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Returns the lists of subcategory",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SubCategory"
+                ],
+                "summary": "Get subcategories",
+                "responses": {
+                    "200": {
+                        "description": "data: subcategories",
                         "schema": {
                             "type": "object",
                             "additionalProperties": true
@@ -144,6 +296,17 @@
         }
     },
     "definitions": {
+        "requests.CategoryRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "requests.LoginRequest": {
             "type": "object",
             "required": [

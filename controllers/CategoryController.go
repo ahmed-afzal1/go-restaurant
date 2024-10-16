@@ -11,6 +11,15 @@ import (
 	"time"
 )
 
+// Details godoc
+// @Summary      Get categories
+// @Description  Returns the lists of category
+// @Tags         Category
+// @Security     JWT
+// @Produce      json
+// @Success      200 {object} map[string]interface{} "data: categories"
+// @Failure      401 {object} map[string]interface{} "error: unauthorized"
+// @Router       /admin/category/index [get]
 func GetAllCategories(c *gin.Context) {
 	categories, err := services.GetAllCategories()
 
@@ -21,6 +30,16 @@ func GetAllCategories(c *gin.Context) {
 	c.JSON(http.StatusAccepted, gin.H{"status": "success", "data": categories})
 }
 
+// category store godoc
+// @Summary      Category store
+// @Description  Return a category after store
+// @Tags         Category
+// @Security     JWT
+// @Produce      json
+// @Param        login body requests.CategoryRequest true "Login Request"
+// @Success      200 {object} map[string]interface{} "data: loginUser"
+// @Failure      400 {object} map[string]interface{} "error: bad request"
+// @Router       /admin/category/store [post]
 func CategoryStore(c *gin.Context) {
 	var req requests.CategoryRequest
 
@@ -54,6 +73,16 @@ func CategoryStore(c *gin.Context) {
 	c.JSON(http.StatusAccepted, gin.H{"status": "success", "data": saveCategory})
 }
 
+// category store godoc
+// @Summary      Category store
+// @Description  Return a category after store
+// @Tags         Category
+// @Security     JWT
+// @Produce      json
+// @Param        id path string true "Category ID"
+// @Success      200 {object} map[string]interface{} "data: loginUser"
+// @Failure      400 {object} map[string]interface{} "error: bad request"
+// @Router       /admin/category/edit/{id} [get]
 func CategoryEdit(c *gin.Context) {
 	id := c.Param("id")
 	category, err := services.CategoryEdit(id)

@@ -13,20 +13,29 @@ func RegisterRoutes(r *gin.Engine) {
 		authRoute.POST("/login", controllers.Login)
 	}
 
-	userRoute := r.Group("/api/v1/admin")
-	userRoute.Use(middleware.AdminAuthenticate())
+	adminRoute := r.Group("/api/v1/admin")
+	adminRoute.Use(middleware.AdminAuthenticate())
 	{
-		userRoute.GET("/details", controllers.Details)
-	}
+		adminRoute.GET("/details", controllers.Details)
 
-	categoryRoute := r.Group("/api/v1/admin/category")
-	categoryRoute.Use(middleware.AdminAuthenticate())
-	{
-		categoryRoute.GET("/index", controllers.GetAllCategories)
-		categoryRoute.POST("/store", controllers.CategoryStore)
-		categoryRoute.GET("/edit/:id", controllers.CategoryEdit)
-		categoryRoute.GET("/status/:id/:status", controllers.CategoryStatusUpdate)
-		categoryRoute.PATCH("/update/:id", controllers.CategoryUpdate)
-		categoryRoute.DELETE("delete/:id", controllers.CategoryDelete)
+		categoryRoute := adminRoute.Group("/category")
+		{
+			categoryRoute.GET("/index", controllers.GetAllCategories)
+			categoryRoute.POST("/store", controllers.CategoryStore)
+			categoryRoute.GET("/edit/:id", controllers.CategoryEdit)
+			categoryRoute.GET("/status/:id/:status", controllers.CategoryStatusUpdate)
+			categoryRoute.PATCH("/update/:id", controllers.CategoryUpdate)
+			categoryRoute.DELETE("delete/:id", controllers.CategoryDelete)
+		}
+
+		subCategoryRoute := adminRoute.Group("/sub-category")
+		{
+			subCategoryRoute.GET("/index", controllers.GetAllSubCategories)
+			// subCategoryRoute.POST("/store", controllers.CategoryStore)
+			// subCategoryRoute.GET("/edit/:id", controllers.CategoryEdit)
+			// subCategoryRoute.GET("/status/:id/:status", controllers.CategoryStatusUpdate)
+			// subCategoryRoute.PATCH("/update/:id", controllers.CategoryUpdate)
+			// subCategoryRoute.DELETE("delete/:id", controllers.CategoryDelete)
+		}
 	}
 }
