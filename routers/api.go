@@ -31,11 +31,11 @@ func RegisterRoutes(r *gin.Engine) {
 		subCategoryRoute := adminRoute.Group("/sub-category")
 		{
 			subCategoryRoute.GET("/index", controllers.GetAllSubCategories)
-			// subCategoryRoute.POST("/store", controllers.CategoryStore)
-			// subCategoryRoute.GET("/edit/:id", controllers.CategoryEdit)
+			subCategoryRoute.POST("/store", controllers.SubCategoryStore)
+			subCategoryRoute.GET("/edit/:id", controllers.SubCategoryEdit)
 			// subCategoryRoute.GET("/status/:id/:status", controllers.CategoryStatusUpdate)
-			// subCategoryRoute.PATCH("/update/:id", controllers.CategoryUpdate)
-			// subCategoryRoute.DELETE("delete/:id", controllers.CategoryDelete)
+			subCategoryRoute.PATCH("/update/:id", controllers.SubCategoryUpdate)
+			subCategoryRoute.DELETE("delete/:id", controllers.SubCategoryDelete)
 		}
 	}
 }

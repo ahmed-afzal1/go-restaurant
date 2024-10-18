@@ -172,6 +172,90 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/sub-category/delete/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Delete SubCategory",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SubCategory"
+                ],
+                "summary": "Delete SubCategory",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "SubCategory ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "data: SubCategory",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "error: bad request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/sub-category/edit/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Return a category after store",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SubCategory"
+                ],
+                "summary": "Get SubCategory",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "SubCategory ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "data: SubCategory",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "error: bad request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
         "/admin/sub-category/index": {
             "get": {
                 "security": [
@@ -187,6 +271,94 @@ const docTemplate = `{
                     "SubCategory"
                 ],
                 "summary": "Get subcategories",
+                "responses": {
+                    "200": {
+                        "description": "data: subcategories",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "error: unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/sub-category/store": {
+            "post": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Returns the lists of subcategory",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SubCategory"
+                ],
+                "summary": "Get subcategories",
+                "parameters": [
+                    {
+                        "description": "SubCategory Request",
+                        "name": "subcategory",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.SubcategoryRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "data: subcategories",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "error: unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/sub-category/update/{id}": {
+            "patch": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Update the subcategory",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SubCategory"
+                ],
+                "summary": "Update subcategory",
+                "parameters": [
+                    {
+                        "description": "SubCategory Request",
+                        "name": "subcategory",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.SubcategoryRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "data: subcategories",
@@ -342,6 +514,21 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "phone": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.SubcategoryRequest": {
+            "type": "object",
+            "required": [
+                "category_id",
+                "name"
+            ],
+            "properties": {
+                "category_id": {
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 }
             }

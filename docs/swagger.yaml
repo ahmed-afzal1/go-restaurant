@@ -32,6 +32,16 @@ definitions:
     - email
     - password
     type: object
+  requests.SubcategoryRequest:
+    properties:
+      category_id:
+        type: string
+      name:
+        type: string
+    required:
+    - category_id
+    - name
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -139,6 +149,60 @@ paths:
       summary: Get admin details
       tags:
       - Admin
+  /admin/sub-category/delete/{id}:
+    delete:
+      description: Delete SubCategory
+      parameters:
+      - description: SubCategory ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'data: SubCategory'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'error: bad request'
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWT: []
+      summary: Delete SubCategory
+      tags:
+      - SubCategory
+  /admin/sub-category/edit/{id}:
+    get:
+      description: Return a category after store
+      parameters:
+      - description: SubCategory ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'data: SubCategory'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'error: bad request'
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWT: []
+      summary: Get SubCategory
+      tags:
+      - SubCategory
   /admin/sub-category/index:
     get:
       description: Returns the lists of subcategory
@@ -158,6 +222,62 @@ paths:
       security:
       - JWT: []
       summary: Get subcategories
+      tags:
+      - SubCategory
+  /admin/sub-category/store:
+    post:
+      description: Returns the lists of subcategory
+      parameters:
+      - description: SubCategory Request
+        in: body
+        name: subcategory
+        required: true
+        schema:
+          $ref: '#/definitions/requests.SubcategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'data: subcategories'
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: 'error: unauthorized'
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWT: []
+      summary: Get subcategories
+      tags:
+      - SubCategory
+  /admin/sub-category/update/{id}:
+    patch:
+      description: Update the subcategory
+      parameters:
+      - description: SubCategory Request
+        in: body
+        name: subcategory
+        required: true
+        schema:
+          $ref: '#/definitions/requests.SubcategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'data: subcategories'
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: 'error: unauthorized'
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWT: []
+      summary: Update subcategory
       tags:
       - SubCategory
   /auth/login:
