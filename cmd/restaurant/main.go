@@ -19,7 +19,7 @@ import (
 //	@description				A comprehensive API for managing restaurant data.
 //	@contact.name				API Support Team
 //	@license.name				MIT
-//	@host						localhost:8080
+//	@host						localhost:8081
 //	@BasePath					/api/v1
 //	@schemes					http https
 //	@securityDefinitions.apiKey	JWT
@@ -53,5 +53,5 @@ func main() {
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	r.Run()
+	r.Run(":8081")
 }

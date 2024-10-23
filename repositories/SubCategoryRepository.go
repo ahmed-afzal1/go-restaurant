@@ -48,7 +48,7 @@ func SubCategoryStore(req requests.SubcategoryRequest) (models.SubCategory, erro
 func SubCategoryEdit(id string) (models.SubCategory, error) {
 	var subcategory models.SubCategory
 
-	result := config.DB.Find(&subcategory, id)
+	result := config.DB.First(&subcategory, id)
 
 	if result.Error != nil {
 		return models.SubCategory{}, errors.New("Subcategory not found")
@@ -61,7 +61,7 @@ func SubCategoryUpdate(req requests.SubcategoryRequest, id string) (models.SubCa
 	var category models.Category
 	var subcategory models.SubCategory
 
-	subcategoryResult := config.DB.Find(&subcategory, req.CategoryId)
+	subcategoryResult := config.DB.First(&subcategory, req.CategoryId)
 
 	if subcategoryResult.Error != nil {
 		return models.SubCategory{}, errors.New("subcategory not found")
