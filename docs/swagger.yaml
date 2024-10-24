@@ -42,7 +42,7 @@ definitions:
     - category_id
     - name
     type: object
-host: localhost:8080
+host: localhost:8081
 info:
   contact:
     name: API Support Team
@@ -128,6 +128,27 @@ paths:
       summary: Category store
       tags:
       - Category
+  /admin/cuisine/index:
+    get:
+      description: Returns the lists of cuisine
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'data: cuisines'
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: 'error: unauthorized'
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWT: []
+      summary: Get cuisinea
+      tags:
+      - Cuisine
   /admin/details:
     get:
       description: Returns the details of the authenticated user.

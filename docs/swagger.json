@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "localhost:8081",
     "basePath": "/api/v1",
     "paths": {
         "/admin/category/edit/{id}": {
@@ -129,6 +129,39 @@
                     },
                     "400": {
                         "description": "error: bad request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/cuisine/index": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Returns the lists of cuisine",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cuisine"
+                ],
+                "summary": "Get cuisinea",
+                "responses": {
+                    "200": {
+                        "description": "data: cuisines",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "error: unauthorized",
                         "schema": {
                             "type": "object",
                             "additionalProperties": true

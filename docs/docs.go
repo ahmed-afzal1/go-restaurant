@@ -139,6 +139,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/cuisine/index": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Returns the lists of cuisine",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cuisine"
+                ],
+                "summary": "Get cuisinea",
+                "responses": {
+                    "200": {
+                        "description": "data: cuisines",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "error: unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
         "/admin/details": {
             "get": {
                 "security": [
@@ -547,7 +580,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "localhost:8081",
 	BasePath:         "/api/v1",
 	Schemes:          []string{"http", "https"},
 	Title:            "Restaurant Management API",

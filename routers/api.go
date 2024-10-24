@@ -37,5 +37,11 @@ func RegisterRoutes(r *gin.Engine) {
 			subCategoryRoute.PATCH("/update/:id", controllers.SubCategoryUpdate)
 			subCategoryRoute.DELETE("delete/:id", controllers.SubCategoryDelete)
 		}
+
+		cuisineRoute := adminRoute.Group("/cuisine")
+		{
+			cuisineRoute.GET("/index", controllers.GetCuisine)
+			cuisineRoute.POST("/store", controllers.CuisineStore)
+		}
 	}
 }
