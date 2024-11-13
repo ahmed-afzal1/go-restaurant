@@ -8,6 +8,7 @@ import (
 	"github.com/ahmed-afzal1/restaurant/requests"
 	"github.com/ahmed-afzal1/restaurant/services"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 // cuisine godoc
@@ -37,7 +38,81 @@ func CuisineStore(c *gin.Context) {
 	defer cancel()
 
 	if err := c.ShouldBind(&req); err != nil {
-
+		if validationErrors, ok := err.(validator.ValidationErrors); ok {
+			formattedErrors := requests.FormatValidationError(validationErrors)
+			c.JSON(http.StatusBadRequest, gin.H{"errors": formattedErrors})
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		}
+		return
 	}
 
+	cusine, err := services.CuisineStore(c, req)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusAccepted, gin.H{"status": "success", "data": cusine})
+
+}
+
+func CuisineEdit(c *gin.Context) {
+	id := c.Param("id")
+	cusine, err := services.CuisineEdit(id)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusAccepted, gin.H{"status": "success", "data": cusine})
+}
+
+func CuisineUpdate(c *gin.Context) {
+
+	var req requests.CuisineRequest
+	id := c.Param("id")
+
+	var _, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+	defer cancel()
+
+	if err := c.ShouldBind(&req); err != nil {
+		if validationErrors, ok := err.(validator.ValidationErrors); ok {
+			formattedErrors := requests.FormatValidationError(validationErrors)
+			c.JSON(http.StatusBadRequest, gin.H{"errors": formattedErrors})
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		}
+		return
+	}
+
+	cusine, err := services.CuisineUpdate(c, req, id)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusAccepted, gin.H{"status": "success", "data": cusine})
+
+}
+
+func CuisineDelete(c *gin.Context) {
+	id := c.Param("id")
+
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Id not found"})
+		return
+	}
+
+	cusineDelMsg, err := services.CuisineDelete(id)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusAccepted, gin.H{"status": "success", "data": cusineDelMsg})
 }

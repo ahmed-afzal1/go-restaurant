@@ -42,6 +42,14 @@ func RegisterRoutes(r *gin.Engine) {
 		{
 			cuisineRoute.GET("/index", controllers.GetCuisine)
 			cuisineRoute.POST("/store", controllers.CuisineStore)
+			cuisineRoute.GET("/edit/:id", controllers.CuisineEdit)
+			cuisineRoute.PUT("/update/:id", controllers.CuisineUpdate)
+			cuisineRoute.DELETE("/delete/:id", controllers.CuisineDelete)
+		}
+
+		restaurantRoute := adminRoute.Group("/restaurant")
+		{
+			restaurantRoute.GET("/index", controllers.GetAllRestaurants)
 		}
 	}
 }
