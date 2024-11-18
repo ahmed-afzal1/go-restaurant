@@ -17,3 +17,7 @@ func GetAllRestaurants(c *gin.Context) {
 
 	c.JSON(http.StatusAccepted, gin.H{"status": "success", "data": resturants})
 }
+
+func RestaurantStore(c *gin.Context) {
+
+}

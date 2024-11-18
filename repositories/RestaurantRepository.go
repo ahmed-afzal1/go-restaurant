@@ -14,3 +14,7 @@ func GetAllRestaurants() ([]models.Restaurant, error) {
 
 	return restaurants, nil
 }
+
+func RestaurantStore() (models.Restaurant, error) {
+	return models.Restaurant{}, nil
+}
