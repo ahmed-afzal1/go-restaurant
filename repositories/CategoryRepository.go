@@ -15,7 +15,7 @@ import (
 func GetAllCategories() ([]models.Category, error) {
 	var categories []models.Category
 
-	result := config.DB.Find(&categories)
+	result := config.DB.Preload("SubCategories").Find(&categories)
 
 	if result.Error != nil {
 		return []models.Category{}, result.Error

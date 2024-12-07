@@ -13,6 +13,6 @@ type Category struct {
 	CreatedAt *time.Time `json:"created_at"`
 	UpdatedAt *time.Time `json:"updated_at"`
 
-	SubCategory []SubCategory `json:"subcategories" gorm:"foreignKey:CategoryID; references:ID"`
-	Food        []Food        `json:"foods" gorm:"foreignKey:CategoryID; references:ID"`
+	SubCategories []SubCategory `json:"subcategories" gorm:"foreignKey:CategoryID"`
+	Food          []Food        `json:"foods" gorm:"foreignKey:CategoryID"`
 }

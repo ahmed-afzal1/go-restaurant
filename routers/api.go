@@ -50,7 +50,7 @@ func RegisterRoutes(r *gin.Engine) {
 		restaurantRoute := adminRoute.Group("/restaurant")
 		{
 			restaurantRoute.GET("/index", controllers.GetAllRestaurants)
-			restaurantRoute.POST("/index", controllers.RestaurantStore)
+			restaurantRoute.POST("/store", controllers.RestaurantStore)
 		}
 	}
 }
